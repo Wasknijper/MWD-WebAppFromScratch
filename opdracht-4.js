@@ -11,42 +11,40 @@
 
 (function(){
     "use strict";
-    var cmdGeo = cmdGeo || {};
 
-    cmdGeo.settings = {
-        SANDBOX : "SANDBOX",
-        LINEAIR : "LINEAIR",
-        GPS_AVAILABLE : 'GPS_AVAILABLE',
-        GPS_UNAVAILABLE : 'GPS_UNAVAILABLE',
-        POSITION_UPDATED : 'POSITION_UPDATED',
-        REFRESH_RATE : 1000,
-        currentPosition : currentPositionMarker,
-        locatieRij : markerRij
-    };
+    
+    var SANDBOX = "SANDBOX",
+        LINEAIR = "LINEAIR",
+        GPS_AVAILABLE = 'GPS_AVAILABLE',
+        GPS_UNAVAILABLE = 'GPS_UNAVAILABLE',
+        POSITION_UPDATED = 'POSITION_UPDATED',
+        REFRESH_RATE = 1000,
+        currentPosition = currentPositionMarker,
+        locatieRij = markerRij;
 
-    cmdGeo.map = {
+    var geo = {
         init: function() {
-            debug_message("Controleer of GPS beschikbaar is...");
+            debug.message("Controleer of GPS beschikbaar is...");
 
-            ET.addListener(GPS_AVAILABLE, _start_interval);
-            ET.addListener(GPS_UNAVAILABLE, function(){debug_message('GPS is niet beschikbaar.');});
+            ET.addListener(GPS_AVAILABLE, this.start_interval);
+            ET.addListener(GPS_UNAVAILABLE, function(){debug.message('GPS is niet beschikbaar.');});
 
             (geo_position_js.init())?ET.fire(GPS_AVAILABLE):ET.fire(GPS_UNAVAILABLE);   
         },
         start_interval: function(event) {
-            debug_message("GPS is beschikbaar, vraag positie.");
+            debug.message("GPS is beschikbaar, vraag positie.");
             _update_position();
-            interval = self.setInterval(_update_position, REFRESH_RATE);
-            ET.addListener(POSITION_UPDATED, _check_locations);
+            interval = self.setInterval(this.update_position, REFRESH_RATE);
+            ET.addListener(POSITION_UPDATED, this.check_locations);
         },
         update_position: function(){
             intervalCounter++;
-            geo_position_js.getCurrentPosition(_set_position, _geo_error_handler, {enableHighAccuracy:true});
+            geo_position_js.getCurrentPosition(this.set_position, debug.error_handler, {enableHighAccuracy:true});
         },
         set_position: function(position){
             currentPosition = position;
             ET.fire("POSITION_UPDATED");
-            debug_message(intervalCounter+" positie lat:"+position.coords.latitude+" long:"+position.coords.longitude);
+            debug.message(intervalCounter+" positie lat:"+position.coords.latitude+" long:"+position.coords.longitude);
         },
         check_locations: function(event){
         // Liefst buiten google maps om... maar helaas, ze hebben alle coole functies
@@ -61,13 +59,13 @@
                         try {
                             (localStorage[locaties[i][0]]=="false")?localStorage[locaties[i][0]]=1:localStorage[locaties[i][0]]++;
                         } catch(error) {
-                            debug_message("Localstorage kan niet aangesproken worden: "+error);
+                            debug.message("Localstorage kan niet aangesproken worden: "+error);
                         }
 
         // TODO: Animeer de betreffende marker
 
                         window.location = locaties[i][1];
-                        debug_message("Speler is binnen een straal van "+ locaties[i][2] +" meter van "+locaties[i][0]);
+                        debug.message("Speler is binnen een straal van "+ locaties[i][2] +" meter van "+locaties[i][0]);
                     }
                 }
             }
@@ -79,19 +77,19 @@
         },
         generate_map: function(myOptions, canvasId){
         // TODO: Kan ik hier asynchroon nog de google maps api aanroepen? dit scheelt calls
-            debug_message("Genereer een Google Maps kaart en toon deze in #"+canvasId);
+            debug.message("Genereer een Google Maps kaart en toon deze in #"+canvasId);
             map = new google.maps.Map(document.getElementById(canvasId), myOptions);
 
             var routeList = [];
             // Voeg de markers toe aan de map afhankelijk van het tourtype
-            debug_message("Locaties intekenen, tourtype is: "+tourType);
+            debug.message("Locaties intekenen, tourtype is: "+tourType);
             for (var i = 0; i < locaties.length; i++) {
 
                 // Met kudos aan Tomas Harkema, probeer local storage, als het bestaat, voeg de locaties toe
                 try {
                     (localStorage.visited===undefined||isNumber(localStorage.visited))?localStorage[locaties[i][0]]=false:null;
                 } catch (error) {
-                    debug_message("Localstorage kan niet aangesproken worden: "+error);
+                    debug.message("Localstorage kan niet aangesproken worden: "+error);
                 }
 
                 var markerLatLng = new google.maps.LatLng(locaties[i][3], locaties[i][4]);
@@ -119,13 +117,13 @@
         // TODO: Kleur aanpassen op het huidige punt van de tour
             if(tourType == LINEAIR){
                 // Trek lijnen tussen de punten
-                debug_message("Route intekenen");
+                debug.message("Route intekenen");
                 var route = new google.maps.Polyline({
                     clickable: false,
                     map: map,
                     path: routeList,
                     strokeColor: 'Black',
-                    strokeOpacity: .6,
+                    strokeOpacity: 0.6,
                     strokeWeight: 3
                 });
 
@@ -140,7 +138,7 @@
             });
 
             // Zorg dat de kaart geupdated wordt als het POSITION_UPDATED event afgevuurd wordt
-            ET.addListener(POSITION_UPDATED, update_positie);
+            ET.addListener(POSITION_UPDATED, this.update_positie);
         }
     };
 
@@ -159,7 +157,7 @@
             customDebugging = true;
         },
         error_handler: function(code, message) {
-            debug_message('geo.js error '+code+': '+message);
+            debug.message('geo.js error '+code+': '+message);
         }
     };
 }());
