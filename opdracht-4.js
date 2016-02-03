@@ -10,14 +10,26 @@
 */
 
 (function(){
+    "use strict";
     var cmdGeo = cmdGeo || {};
+
+    cmdGeo.settings = {
+        SANDBOX : "SANDBOX",
+        LINEAIR : "LINEAIR",
+        GPS_AVAILABLE : 'GPS_AVAILABLE',
+        GPS_UNAVAILABLE : 'GPS_UNAVAILABLE',
+        POSITION_UPDATED : 'POSITION_UPDATED',
+        REFRESH_RATE : 1000,
+        currentPosition : currentPositionMarker,
+        locatieRij : markerRij
+    };
 
     cmdGeo.map = {
         init: function() {
             debug_message("Controleer of GPS beschikbaar is...");
 
             ET.addListener(GPS_AVAILABLE, _start_interval);
-            ET.addListener(GPS_UNAVAILABLE, function(){debug_message('GPS is niet beschikbaar.')});
+            ET.addListener(GPS_UNAVAILABLE, function(){debug_message('GPS is niet beschikbaar.');});
 
             (geo_position_js.init())?ET.fire(GPS_AVAILABLE):ET.fire(GPS_UNAVAILABLE);   
         },
@@ -67,7 +79,7 @@
         },
         generate_map: function(myOptions, canvasId){
         // TODO: Kan ik hier asynchroon nog de google maps api aanroepen? dit scheelt calls
-            debug_message("Genereer een Google Maps kaart en toon deze in #"+canvasId)
+            debug_message("Genereer een Google Maps kaart en toon deze in #"+canvasId);
             map = new google.maps.Map(document.getElementById(canvasId), myOptions);
 
             var routeList = [];
@@ -77,7 +89,7 @@
 
                 // Met kudos aan Tomas Harkema, probeer local storage, als het bestaat, voeg de locaties toe
                 try {
-                    (localStorage.visited==undefined||isNumber(localStorage.visited))?localStorage[locaties[i][0]]=false:null;
+                    (localStorage.visited===undefined||isNumber(localStorage.visited))?localStorage[locaties[i][0]]=false:null;
                 } catch (error) {
                     debug_message("Localstorage kan niet aangesproken worden: "+error);
                 }
@@ -97,6 +109,7 @@
                     icon: markerRij[i],
                     title: locaties[i][0]
                 });
+            }
         },
         update_positie: function(event){
             // use currentPosition to center the map
@@ -131,36 +144,22 @@
         }
     };
 
-    cmdGeo.settings = {
-        SANDBOX : "SANDBOX",
-        LINEAIR : "LINEAIR",
-        GPS_AVAILABLE : 'GPS_AVAILABLE',
-        GPS_UNAVAILABLE : 'GPS_UNAVAILABLE',
-        POSITION_UPDATED : 'POSITION_UPDATED',
-        REFRESH_RATE : 1000,
-        currentPosition : currentPositionMarker,
-        locatieRij : markerRij
-    };
-
     cmdGeo.utils = {
         isNumber: function(n) {
           return !isNaN(parseFloat(n)) && isFinite(n);
-        },
-        geo_error_handler: function(code, message) {
-            debug_message('geo.js error '+code+': '+message);
-        },
-        debug_message: function(message){
+        }
+    };
+
+    cmdGeo.debug = {
+        message: function(message){
             (customDebugging && debugId)?document.getElementById(debugId).innerHTML:console.log(message);
         },
-        set_custom_debugging: function(debugId){
+        set_custom: function(debugId){
             debugId = this.debugId;
             customDebugging = true;
         },
-        EventTarget: function(a,c){
-            this._listeners={};
-            {"undefined"==typeof this._listeners[a]&&(this._listeners[a]=[]);this._listeners[a].push(c)},fire:function(a){"string"==typeof a&&(a={type:a});a.target||(a.target=this);if(!a.type)throw Error("Event object missing 'type' property.");if(this._listeners[a.type]instanceof Array)for(var c=this._listeners[a.type],b=0,d=c.length;b<d;b++)c[b].call(this,a)},removeListener:function(a,c){if(this._listeners[a]instanceof Array)for(var b=
-            this._listeners[a],d=0,e=b.length;d<e;d++)if(b[d]===c){b.splice(d,1);break}}};
-            var ET = new EventTarget();
+        error_handler: function(code, message) {
+            debug_message('geo.js error '+code+': '+message);
         }
     };
 }());

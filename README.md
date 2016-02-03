@@ -1,3 +1,8 @@
 # MWD-WebAppFromScratch
 
-test
+##Opdracht 2
+
+###Voordelen
+
+
+###Nadelen
