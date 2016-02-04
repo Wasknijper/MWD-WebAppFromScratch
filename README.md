@@ -1,5 +1,8 @@
 # MWD-WebAppFromScratch
 
+##Code opdrachten:
+- Opdracht 5 http://wasknijper.github.io/MWD-WebAppFromScratch/opdracht%205
+
 ## Opdracht 2 - Voor- en nadelen JavaScript libraries/frameworks onderzoeken 
 
 ### Voordelen
