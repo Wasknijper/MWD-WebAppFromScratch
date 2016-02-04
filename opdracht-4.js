@@ -26,32 +26,32 @@
         init: function() {
             debug.message("Controleer of GPS beschikbaar is...");
 
-            ET.addListener(GPS_AVAILABLE, this.start_interval);
+            ET.addListener(GPS_AVAILABLE, this.startInterval);
             ET.addListener(GPS_UNAVAILABLE, function(){debug.message('GPS is niet beschikbaar.');});
 
             (geo_position_js.init())?ET.fire(GPS_AVAILABLE):ET.fire(GPS_UNAVAILABLE);   
         },
-        start_interval: function(event) {
+        startInterval: function(event) {
             debug.message("GPS is beschikbaar, vraag positie.");
-            _update_position();
-            interval = self.setInterval(this.update_position, REFRESH_RATE);
-            ET.addListener(POSITION_UPDATED, this.check_locations);
+            updatePosition();
+            interval = self.setInterval(this.updatePosition, REFRESH_RATE);
+            ET.addListener(POSITION_UPDATED, this.checkLocations);
         },
-        update_position: function(){
+        updatePosition: function(){
             intervalCounter++;
-            geo_position_js.getCurrentPosition(this.set_position, debug.error_handler, {enableHighAccuracy:true});
+            geo_position_js.getCurrentPosition(this.setPosition, debug.errorHandler, {enableHighAccuracy:true});
         },
-        set_position: function(position){
+        setPosition: function(position){
             currentPosition = position;
             ET.fire("POSITION_UPDATED");
             debug.message(intervalCounter+" positie lat:"+position.coords.latitude+" long:"+position.coords.longitude);
         },
-        check_locations: function(event){
+        checkLocations: function(event){
         // Liefst buiten google maps om... maar helaas, ze hebben alle coole functies
             for (var i = 0; i < locaties.length; i++) {
                 var locatie = {coords:{latitude: locaties[i][3],longitude: locaties[i][4]}};
 
-                if(_calculate_distance(locatie, currentPosition)<locaties[i][2]){
+                if(this.calculateDistance(locatie, currentPosition)<locaties[i][2]){
 
                     // Controle of we NU op die locatie zijn, zo niet gaan we naar de betreffende page
                     if(window.location!=locaties[i][1] && localStorage[locaties[i][0]]=="false"){
@@ -70,12 +70,12 @@
                 }
             }
         },
-        calculate_distance: function(p1, p2){
+        calculateDistance: function(p1, p2){
             var pos1 = new google.maps.LatLng(p1.coords.latitude, p1.coords.longitude);
             var pos2 = new google.maps.LatLng(p2.coords.latitude, p2.coords.longitude);
             return Math.round(google.maps.geometry.spherical.computeDistanceBetween(pos1, pos2), 0);
         },
-        generate_map: function(myOptions, canvasId){
+        generateMap: function(myOptions, canvasId){
         // TODO: Kan ik hier asynchroon nog de google maps api aanroepen? dit scheelt calls
             debug.message("Genereer een Google Maps kaart en toon deze in #"+canvasId);
             map = new google.maps.Map(document.getElementById(canvasId), myOptions);
@@ -109,7 +109,7 @@
                 });
             }
         },
-        update_positie: function(event){
+        updatePositie: function(event){
             // use currentPosition to center the map
             var newPos = new google.maps.LatLng(currentPosition.coords.latitude, currentPosition.coords.longitude);
             map.setCenter(newPos);
@@ -138,25 +138,25 @@
             });
 
             // Zorg dat de kaart geupdated wordt als het POSITION_UPDATED event afgevuurd wordt
-            ET.addListener(POSITION_UPDATED, this.update_positie);
+            ET.addListener(POSITION_UPDATED, this.updatePositie);
         }
     };
 
-    cmdGeo.utils = {
+    var utils = {
         isNumber: function(n) {
           return !isNaN(parseFloat(n)) && isFinite(n);
         }
     };
 
-    cmdGeo.debug = {
+    var debug = {
         message: function(message){
             (customDebugging && debugId)?document.getElementById(debugId).innerHTML:console.log(message);
         },
-        set_custom: function(debugId){
+        setCustom: function(debugId){
             debugId = this.debugId;
             customDebugging = true;
         },
-        error_handler: function(code, message) {
+        errorHandler: function(code, message) {
             debug.message('geo.js error '+code+': '+message);
         }
     };
@@ -174,21 +174,21 @@
 // }
 
 // Start een interval welke op basis van REFRESH_RATE de positie updated
-// function _start_interval(event){
+// function _startInterval(event){
 //     debug_message("GPS is beschikbaar, vraag positie.");
-//     _update_position();
-//     interval = self.setInterval(_update_position, REFRESH_RATE);
-//     ET.addListener(POSITION_UPDATED, _check_locations);
+//     _updatePosition();
+//     interval = self.setInterval(_updatePosition, REFRESH_RATE);
+//     ET.addListener(POSITION_UPDATED, _checkLocations);
 // }
 
 // Vraag de huidige positie aan geo.js, stel een callback in voor het resultaat
-// function _update_position(){
+// function _updatePosition(){
 //     intervalCounter++;
-//     geo_position_js.getCurrentPosition(_set_position, _geo_error_handler, {enableHighAccuracy:true});
+//     geo_position_js.getCurrentPosition(_setPosition, _geo_errorHandler, {enableHighAccuracy:true});
 // }
 
 // Callback functie voor het instellen van de huidige positie, vuurt een event af
-// function _set_position(position){
+// function _setPosition(position){
 //     currentPosition = position;
 //     ET.fire("POSITION_UPDATED");
 //     debug_message(intervalCounter+" positie lat:"+position.coords.latitude+" long:"+position.coords.longitude);
@@ -202,7 +202,7 @@
 
 // GOOGLE MAPS FUNCTIES
 /**
- * generate_map(myOptions, canvasId)
+ * generateMap(myOptions, canvasId)
  *  roept op basis van meegegeven opties de google maps API aan
  *  om een kaart te genereren en plaatst deze in het HTML element
  *  wat aangeduid wordt door het meegegeven id.
