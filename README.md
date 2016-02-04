@@ -40,7 +40,7 @@
 - ***Past beter bij de gebruiker*** Op één pagina kan de ontwerpen makkelijker de gebruiker verleiden om het gewenste gedrag te vertonen. Omdat de pagina niet helemaal opnieuw hoeft te worden geladen wordt de gebruiker niet uit de flow van de app gehaald. 
 
 ##Nadelen
-- ***De eerste keer laden kan lang duren als er veel zware assests(bijv. afbeeldingen) op de pagina staan. ***
+- ***De eerste keer laden kan lang duren als er veel zware assests(bijv. afbeeldingen) op de pagina staan.***
 
 - ***Javascript moet aanstaan om de app te kunnen gebruiken***
 
