@@ -1,0 +1,36 @@
+* {
+	padding: 0;
+	margin: 0;
+	font-family: sans-serif;
+	box-sizing: border-box;
+}
+
+nav{
+	background-color: white;
+	position: fixed;
+	width: 100%;
+}
+
+li {
+	padding: 0.5em;
+	list-style: none;
+}
+
+section {
+	padding: 5em 1em; 
+	color: white;
+}
+
+.start{
+	background-color: #83C7E5;
+	height: 100vh;
+}
+
+.front-end{
+	background-color: #00AAAD;
+	height: 100vh;
+}
+
+.invis{
+	display: none;
+}
