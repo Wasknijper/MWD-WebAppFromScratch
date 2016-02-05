@@ -3,15 +3,25 @@
 
 	var app = {
 		init: function(){
+			this.startUrl = window.location.href;
+			this.pages = document.getElementsByTagName('section');
+
+			for(var i = 0; i < this.pages.length; i++){
+    			this.pages[i].classList.add("invis");
+			}
+
 			routes.init();
-		}
+		},
+		startUrl : "",
+		pages : "",
+		startScreen: "home"
 	};
 
 	var routes = {
 		newUrl : "",
 		oldUrl : "",
-		startScreen: "home",
 		init: function(){
+			sections.start();
 			//https://developer.mozilla.org/en-US/docs/Web/Events/hashchange
 			window.addEventListener('hashchange', function(e){
 				this.newUrl = e.newURL.split('#')[1];
@@ -22,15 +32,24 @@
 	};
 
 	var sections = {
-		toggle: function(route, oldRoute){
+		start: function(){
+			if (app.startUrl.indexOf('#') === -1){
+				document.getElementById(app.startScreen).classList.remove("invis");
+			} else {
+				app.startUrl = app.startUrl.split('#')[1];
+				document.getElementById(app.startUrl).classList.remove('invis');				
+			}
+		},
+		toggle: function(newRoute, oldRoute){
 			window.scrollTo(0,0);
-			if (route != oldRoute) {
-				document.getElementById(route).classList.remove('invis');
+			if (newRoute != oldRoute) {
+				document.getElementById(newRoute).classList.remove('invis');
 
 				if(oldRoute){
 					document.getElementById(oldRoute).classList.add('invis');	
 				} else {
-					document.getElementById(routes.startScreen).classList.add('invis');
+
+					document.getElementById(app.startUrl).classList.add('invis');
 				}
 			}
 		}
