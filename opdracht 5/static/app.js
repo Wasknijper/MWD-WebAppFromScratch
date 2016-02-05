@@ -36,8 +36,8 @@
 			if (app.startUrl.indexOf('#') === -1){
 				document.getElementById(app.startScreen).classList.remove("invis");
 			} else {
-				app.startUrl = app.startUrl.split('#')[1];
-				document.getElementById(app.startUrl).classList.remove('invis');				
+				app.startScreen = app.startUrl.split('#')[1];
+				document.getElementById(app.startScreen).classList.remove('invis');				
 			}
 		},
 		toggle: function(newRoute, oldRoute){
@@ -48,8 +48,7 @@
 				if(oldRoute){
 					document.getElementById(oldRoute).classList.add('invis');	
 				} else {
-
-					document.getElementById(app.startUrl).classList.add('invis');
+					document.getElementById(app.startScreen).classList.add('invis');
 				}
 			}
 		}
