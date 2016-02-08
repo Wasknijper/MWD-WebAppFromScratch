@@ -11,9 +11,13 @@ nav{
 	width: 100%;
 }
 
-li {
+nav li {
 	padding: 0.5em;
 	list-style: none;
+}
+
+section ul {
+	padding: 1em;
 }
 
 section {
