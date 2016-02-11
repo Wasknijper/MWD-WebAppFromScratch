@@ -54,7 +54,7 @@
 				console.log(pokedex.savedPokemon);
 
 				pokedex.loaded = true;
-				curObj.pages.home.innerHTML = templateHome.render({pokedex : pokedex.national});
+				this.pages.home.innerHTML = templateHome.render({pokedex : pokedex.national});
 				//var pokemon = this.national.indexOf(searchElement[, fromIndex = 0])
 			}
 
