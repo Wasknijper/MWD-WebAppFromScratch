@@ -18,50 +18,48 @@
 				this.pages[i].classList.add("invis");
 			}
 
-			var pokeData, curObj, name, loading;
 			//check if pokedex is in local storage - bron:http://stackoverflow.com/questions/3262605/html5-localstorage-check-if-item-is-set
 			if(localStorage.getItem('pokedex') === null) {
+				//get the data from the api
 				pokeData = this.request('api/v1/pokedex/1');
 				curObj = this;
 
 				pokeData.then(
-				    // success handler
+				    // success handler, so if the request is done this happens
 				    //xhr = xml http request
 				    function(data, xhr) {
-				      // load the list of pokemon into the pokedex, since it contains all the pokemon its the national pokedex.
-				      // its not a string, so no need to parse the JSON
-				      pokedex.national = data.pokemon;
-				      localStorage.pokedex = JSON.stringify(pokedex.national);
-				      //log to check
-				      pokedex.loaded = true;
-				      curObj.pages.home.innerHTML = templateHome.render({pokedex : pokedex.national});
+				    	// load the list of pokemon into the pokedex, since it contains all the pokemon its the national pokedex.
+				    	// Api returns an object, not a string
+				    	pokedex.national = data.pokemon;
+				    	//but for us to save in local storage we do need to stringify
+				    	localStorage.pokedex = JSON.stringify(pokedex.national);
+				 	    pokedex.loaded = true;
+				 	    //render the template
+				    	curObj.pages.home.innerHTML = templateHome.render({pokedex : pokedex.national});
 
 				    },
 				    // error handler
 				    function(data, xhr) {
-				      console.error(data, xhr.status);
+				    	console.error(data, xhr.status);
 				    }
 				);
 			} else {
 				//if the pokedex already exists in localStorage, set it to pokedex.national
 				pokedex.national = JSON.parse(localStorage.pokedex);
 
+				//if there are any pokemon already saved load them to pokedex.savedPokemon
 				if(localStorage.getItem('savedPokemon')){
 					pokedex.savedPokemon = JSON.parse(localStorage.savedPokemon);
 				}
 
-				console.log(pokedex.national);
-				console.log(pokedex.savedPokemon);
-
 				pokedex.loaded = true;
+				//render the template
 				this.pages.home.innerHTML = templateHome.render({pokedex : pokedex.national});
-				//var pokemon = this.national.indexOf(searchElement[, fromIndex = 0])
 			}
 
-			//add route event listeners by initializing routes
-			//routes.init();
-			//initialize pokedex
+			//run processHash to go to the right page
 			processHash();
+			//add the event listener for future hashchanges
 			window.addEventListener('hashchange', processHash);
 		},
 		request : function(options){
@@ -70,28 +68,35 @@
 		}
 	};
 
+	//make a router
 	var routes = new Rlite();
 
+	//route for no hash or empty hash
 	routes.add('', function () {
   		document.title = 'Home';
   		app.pages.home.classList.remove("invis");
   		console.log(pokedex.national);
   		if (pokedex.loaded === false){
+  			//if pokedex is still being initilized show a loading message
   			app.pages.home.innerHTML = templateLoading.render();
   		} else {
   			app.pages.home.innerHTML = templateHome.render({pokedex : pokedex.national});
    		}
 	});
 
+	//route for the pokemon detail page
 	routes.add('pokemon/:name', function (route) {
+		//convert it to string
 		var pName = route.params.name.toString();
-		console.log(pName);
+		//look up the pokemon in pokedex.national
 		var found = pokedex.findPokemon(pokedex.national, pName);
 		var url, currentPokemon;
 
 		if (found === false){
-
+			//if pokemon isnt found in pokedex it doesnt exist
+			app.pages.pokemon.innerHTML = templateError.render();
 		} else {
+			//Start the loading template and execute load function to display the pokemon
   			app.pages.pokemon.innerHTML = templateLoadingPoke.render({name : pName});
 			url = pokedex.national[found].resource_uri;
 			pokedex.loadPokemon(pName.capitalize(), url);
@@ -149,12 +154,14 @@
 		national : [],
 		savedPokemon : [],
 		loadPokemon : function(pName, uri, pokemon) {
-			var result = app.request(uri);
+			//make the request to the api
 			var curObj = this;
+			//check if this pokemon already exists in the array
 			var isSaved = this.findPokemon(this.savedPokemon, pName);
 			//check if the pokemon exists in the savedPokemon array
 			if (isSaved === false){
-				//
+				var result = app.request(uri);
+				//if it doesnt we store the data in savedPokemon and launch displayPokemon for it to render
 				result.then(
 					function(data, xhr) {
 						var pokemon = data;
@@ -168,25 +175,31 @@
 					}
 				);
 			} else {
-				console.log(this.savedPokemon[isSaved]);
+				// it already exists in savedPokemon run displayPokemon
 				this.displayPokemon(this.savedPokemon[isSaved]);
 			}
 
 		},
 		findPokemon : function(array, value){
+			//accepts the array to search in and the value we look for
 			if(array.length !== 0){
+				//if the array is not empty we start the for loop
 				for(var i = 0, len = array.length; i < len; i++) {
     				if( array[i].name == value ){
+    					//if we find the pokemon we return the index from the array
         				return i;
 					} else if (array.length-1 === i){
+						//otherwise we return false, so we know it doesnt exist in the array
 						return false;
 					}
 				}
 			} else {
+				//return false if the array is not an array or empty
 				return false;
 			}
 		},
 		displayPokemon : function(pokemon){
+			//check if the pokemon has an evolution to render the correct template
 			if (pokemon.evolutions.length > 0){
 	  			app.pages.pokemon.innerHTML = templatePokemonEvolve.render({pokemon : pokemon, evolution: pokemon.evolutions[0].to, evoLink : pokemon.evolutions[0].to.toLowerCase()});
 	  		} else {
