@@ -35,7 +35,7 @@
 				      //log to check
 				      console.log(pokedex.national);
 				      console.log(localStorage.pokedex);
-				      home.innerHTML = templateHome.render({pokemon : pokedex.national});
+				      curObj.pages.home.innerHTML = templateHome.render({pokemon : pokedex.national});
 
 				    },
 				    // error handler
