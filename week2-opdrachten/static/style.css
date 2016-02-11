@@ -5,7 +5,7 @@
 	box-sizing: border-box;
 }
 
-nav{
+header{
 	background-color: white;
 	position: fixed;
 	width: 100%;
@@ -20,19 +20,27 @@ section ul {
 	padding: 1em;
 }
 
-section {
+body > section {
 	padding: 5em 1em; 
 	color: white;
 }
 
-.start{
+h2 {
+	font-size: 1.2em;
+}
+
+#home{
 	background-color: #83C7E5;
+}
+
+#pokemon{
+	background-color: #00AAAD;
 	height: 100vh;
 }
 
-.front-end{
-	background-color: #00AAAD;
-	height: 100vh;
+#home li {
+	display: inline-block; 
+	padding: 1em;
 }
 
 .invis{
