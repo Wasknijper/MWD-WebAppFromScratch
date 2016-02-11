@@ -36,7 +36,6 @@
 				      console.log(pokedex.national);
 				      console.log(localStorage.pokedex);
 				      home.innerHTML = templateHome.render({pokemon : pokedex.national});
-				      pokedex.loaded = true;
 
 				    },
 				    // error handler
@@ -110,23 +109,6 @@
   		sections.toggle(app.newRoute, app.oldRoute);
 	}
 
-	// var routes = {
-	// 	newUrl : "",
-	// 	oldUrl : "",
-	// 	init: function(){
-	// 		//run start function from sections to show the correct section to start with
-	// 		sections.start();
-	// 		//https://developer.mozilla.org/en-US/docs/Web/Events/hashchange
-	// 		window.addEventListener('hashchange', function(e){
-	// 			//get the hash from the url, event listener passes the url in the e parameter
-	// 			this.newUrl = e.newURL.split('#')[1];
-	// 			this.oldUrl = e.oldURL.split('#')[1];
-	// 			//call the toggle method from sections to show the correct section
-	// 			sections.toggle(this.newUrl, this.oldUrl);
-	// 		});
-	// 	}
-	// };
-
 	var sections = {
 		toggle: function(newRoute, oldRoute){
 			//scroll to top incase the page is long
@@ -154,6 +136,7 @@
 		}
 	};
 
+	// templates
 	var templateLoading = new t("<p>Loading all the Pokémon...</p>");
 	var templateLoadingPoke = new t("<p>Loading data on {{=name}}</p>");
 	var templateHome = new t("<ul>{{@pokedex}}<li><a href=\'#pokemon/{{%_val.name}}\'>{{=_val.name}}</a></li>{{/@pokedex}}</ul>");
@@ -170,8 +153,9 @@
 			var result = app.request(uri);
 			var curObj = this;
 			var isSaved = this.findPokemon(this.savedPokemon, pName);
-
+			//check if the pokemon exists in the savedPokemon array
 			if (isSaved === false){
+				//
 				result.then(
 					function(data, xhr) {
 						var pokemon = data;
