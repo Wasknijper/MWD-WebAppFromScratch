@@ -33,8 +33,7 @@
 				      pokedex.national = data.pokemon;
 				      localStorage.pokedex = JSON.stringify(pokedex.national);
 				      //log to check
-				      console.log(pokedex.national);
-				      console.log(localStorage.pokedex);
+				      pokedex.loaded = true;
 				      curObj.pages.home.innerHTML = templateHome.render({pokedex : pokedex.national});
 
 				    },
