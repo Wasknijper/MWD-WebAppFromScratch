@@ -22,7 +22,7 @@
 			if(localStorage.getItem('pokedex') === null) {
 				//get the data from the api
 				var pokeData = this.request('api/v1/pokedex/1');
-				curObj = this;
+				var curObj = this;
 
 				pokeData.then(
 				    // success handler, so if the request is done this happens
