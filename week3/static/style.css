@@ -23,6 +23,7 @@ section ul {
 body > section {
 	padding: 5em 1em; 
 	color: white;
+	height: 100vh;
 }
 
 h2 {
@@ -35,7 +36,21 @@ h2 {
 
 #pokemon{
 	background-color: #00AAAD;
-	height: 100vh;
+}
+
+#pokemon main {
+	float: left;
+}
+
+#pokemon > div{
+	float: left;
+	display: inline-block;
+	max-width: 60em;
+	max-height: 60em;
+	background-size: contain;
+	background-repeat: no-repeat;
+	width: 100%;
+	height: 100%;
 }
 
 #home li {

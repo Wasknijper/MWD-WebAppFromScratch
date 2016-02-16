@@ -171,8 +171,8 @@
 	var templateLoadingPoke = new t("<p>Loading data on {{=name}}</p>");
 	var templateHome = new t("<form id=\'search\'><input type=\'text\' name=\'searchPoke\' placeholder=\'Enter the pokemon you want to find\' /><button type=\'submit\'>Find that Pokémon!</button></form><ul>{{@pokedex}}<li><a href=\'#pokemon/{{%_val.name}}\'>{{=_val.name}}</a></li>{{/@pokedex}}</ul>");
 	var templateError = new t("<p>This is not a pokemon! <a href=\'#\'>Return to Home</a></p>");
-	var templatePokemonEvolve = new t("<h1>Meet {{=pokemon.name}}!</h1> <section> <h2>Abilities</h2> {{@pokemon.abilities}}<li>{{=_val.name}}</a></li>{{/@pokemon.abilities}}</section> <h2>Stats</h2> <section> <li>Attack: {{=pokemon.attack}}</li><li>Defence: {{=pokemon.defence}}</li><li>Hitpoints: {{=pokemon.hp}}</li><li>Sp. Attack: {{=pokemon.sp_atk}}</li><li>Sp. Defence: {{=pokemon.sp_def}}</li><li>Speed: {{=pokemon.speed}}</li></section> <section>{{=pokemon.name}} evolves to <a href=\'#pokemon/{{=evoLink}}\'>{{=evolution}}</a></section>");
-	var templatePokemon = new t("<h1>Meet {{=pokemon.name}}!</h1> <section> <h2>Abilities</h2> {{@pokemon.abilities}}<li>{{=_val.name}}</a></li>{{/@pokemon.abilities}}</section> <h2>Stats</h2> <section> <li>Attack: {{=pokemon.attack}}</li><li>Defence: {{=pokemon.defence}}</li><li>Hitpoints: {{=pokemon.hp}}</li><li>Sp. Attack: {{=pokemon.sp_atk}}</li><li>Sp. Defence: {{=pokemon.sp_def}}</li><li>Speed: {{=pokemon.speed}}</li></section>");
+	var templatePokemonEvolve = new t("<h1>Meet {{=pokemon.name}}!</h1> <main> <section> <h2>Abilities</h2> {{@pokemon.abilities}}<li>{{=_val.name}}</a></li>{{/@pokemon.abilities}}</section> <h2>Stats</h2> <section> <li>Attack: {{=pokemon.attack}}</li><li>Defence: {{=pokemon.defence}}</li><li>Hitpoints: {{=pokemon.hp}}</li><li>Sp. Attack: {{=pokemon.sp_atk}}</li><li>Sp. Defence: {{=pokemon.sp_def}}</li><li>Speed: {{=pokemon.speed}}</li></section> <section>{{=pokemon.name}} evolves to <a href=\'#pokemon/{{=evoLink}}\'>{{=evolution}}</a></section></main>");
+	var templatePokemon = new t("<h1>Meet {{=pokemon.name}}!</h1><main> <section> <h2>Abilities</h2> {{@pokemon.abilities}}<li>{{=_val.name}}</a></li>{{/@pokemon.abilities}}</section> <h2>Stats</h2> <section> <li>Attack: {{=pokemon.attack}}</li><li>Defence: {{=pokemon.defence}}</li><li>Hitpoints: {{=pokemon.hp}}</li><li>Sp. Attack: {{=pokemon.sp_atk}}</li><li>Sp. Defence: {{=pokemon.sp_def}}</li><li>Speed: {{=pokemon.speed}}</li></section></main>");
 
 	var pokedex = {
 		//pokemon objects in the national array have a name(bulbasaur) and a resource_uri("api/v1/pokemon/1/")
@@ -233,11 +233,34 @@
 		},
 		displayPokemon : function(pokemon){
 			//check if the pokemon has an evolution to render the correct template
+			var imgDiv = document.createElement('div');
+				imgDiv.style.backgroundImage = "url('load.gif')";
+				
 			if (pokemon.evolutions.length > 0){
 	  			app.pages.pokemon.innerHTML = templatePokemonEvolve.render({pokemon : pokemon, evolution: pokemon.evolutions[0].to, evoLink : pokemon.evolutions[0].to.toLowerCase()});
+	  			app.pages.pokemon.appendChild(imgDiv);
+	  			this.getPokemonImg(pokemon.name, imgDiv);
 	  		} else {
-	  			app.pages.pokemon.innerHTML = templatePokemon.render({pokemon : pokemon});	
+	  			app.pages.pokemon.innerHTML = templatePokemon.render({pokemon : pokemon});
+	  			app.pages.pokemon.appendChild(imgDiv);
+	  			this.getPokemonImg(pokemon.name, imgDiv);	
 	  		}
+		},
+		getPokemonImg : function(pName, img){
+			var mwjs = new MediaWikiJS('http://bulbapedia.bulbagarden.net/');
+			var pageName = pName + '_(Pokémon)';
+			//console.log(pageName);
+			mwjs.send({action: 'parse', page: pageName , prop: 'images'}, function (data) {
+    			var imgName = data.parse.images[2]; 
+    			//console.log(imgName);
+
+    			var getImg = new MediaWikiJS('http://bulbapedia.bulbagarden.net/');
+
+    			getImg.send({action: 'query', titles: "File:" + imgName, prop: 'imageinfo', iiprop: 'url', rawcontinue:""},function(dataImg){
+    				var imgUrl = dataImg.query.pages[-1].imageinfo[0].url;
+    				img.style.backgroundImage = "url(" + imgUrl +")";
+    			});
+			});
 		}
 	};
 
@@ -248,11 +271,5 @@
 
 	//start the app
 	app.init();
-
-	var mwjs = new MediaWikiJS('https://en.wikipedia.org');
-	mwjs.send({action: 'query', prop: 'revisions', titles: 'Main Page'}, function (data) {
-    	var pages = data.query.pages;
-    	alert('Last edited by: ' + pages[Object.keys(pages)[0]].revisions[0].user);
-	});
 
 }());
