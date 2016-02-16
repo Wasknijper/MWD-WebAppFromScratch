@@ -38,7 +38,6 @@ function pegasus(a, xhr) {
       }
     }
   };
-  xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
   
   // Send
   xhr.send();

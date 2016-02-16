@@ -249,9 +249,10 @@
 	//start the app
 	app.init();
 
-	var test = pegasus("https://en.wikipedia.org/w/api.php?action=opensearch&origin=http://wasknijper.github.io/MWD-WebAppFromScratch/week3/&search=zyz&limit=1&namespace=0&format=jsonfm");
-	test.then(
-		function(data, xhr){
-			 console.log(data.parse.images[2]);
-		});
+	var mwjs = new MediaWikiJS('https://en.wikipedia.org');
+	mwjs.send({action: 'query', prop: 'revisions', titles: 'Main Page'}, function (data) {
+    	var pages = data.query.pages;
+    	alert('Last edited by: ' + pages[Object.keys(pages)[0]].revisions[0].user);
+	});
+
 }());
