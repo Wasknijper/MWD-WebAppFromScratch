@@ -21,8 +21,8 @@
 			//check if pokedex is in local storage - bron:http://stackoverflow.com/questions/3262605/html5-localstorage-check-if-item-is-set
 			if(localStorage.getItem('pokedex') === null) {
 				//get the data from the api
-				var pokeData = this.request('api/v1/pokedex/1');
-				var curObj = this;
+				pokeData = this.request('api/v1/pokedex/1');
+				curObj = this;
 
 				pokeData.then(
 				    // success handler, so if the request is done this happens
@@ -249,4 +249,9 @@
 	//start the app
 	app.init();
 
+	var test = pegasus("https://en.wikipedia.org/w/api.php?action=opensearch&search=zyz&limit=1&namespace=0&format=jsonfm");
+	test.then(
+		function(data, xhr){
+			 console.log(data.parse.images[2]);
+		});
 }());
