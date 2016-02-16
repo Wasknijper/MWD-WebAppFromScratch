@@ -249,7 +249,7 @@
 	//start the app
 	app.init();
 
-	var test = pegasus("https://en.wikipedia.org/w/api.php?action=opensearch&search=zyz&limit=1&namespace=0&format=jsonfm");
+	var test = pegasus("https://en.wikipedia.org/w/api.php?action=opensearch&origin=http://wasknijper.github.io/MWD-WebAppFromScratch/week3/&search=zyz&limit=1&namespace=0&format=jsonfm");
 	test.then(
 		function(data, xhr){
 			 console.log(data.parse.images[2]);

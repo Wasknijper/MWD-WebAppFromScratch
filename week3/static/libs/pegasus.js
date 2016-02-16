@@ -38,9 +38,6 @@ function pegasus(a, xhr) {
       }
     }
   };
-  
-  xhr.withCredentials = true;
-  xhr.setRequestHeader("Origin", "http://wasknijper.github.io/MWD-WebAppFromScratch/week3/");
   xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
   
   // Send
