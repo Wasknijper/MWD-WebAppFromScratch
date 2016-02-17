@@ -23,7 +23,7 @@ section ul {
 body > section {
 	padding: 5em 1em; 
 	color: white;
-	height: 100vh;
+	height: auto;
 }
 
 h2 {
@@ -53,6 +53,7 @@ h2 {
 	display: inline-block;
 	max-width: 60em;
 	max-height: 60em;
+	min-height: 20em;
 	background-size: contain;
 	background-repeat: no-repeat;
 	width: 100%;
