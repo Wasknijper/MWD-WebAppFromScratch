@@ -5,7 +5,11 @@ function pegasus(a, xhr) {
 
   // Open url
   xhr.open('GET', a);
-  xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+  xhr.setRequestHeader("Access-Control-Allow-Origin", "https://wasknijper.github.io/MWD-WebAppFromScratch/week3/");
+  xhr.setRequestHeader("Access-Control-Allow-Methods", "GET");
+  xhr.setRequestHeader("Access-Control-Max-Ag", "1728000");
+  xhr.setRequestHeader("Access-Control-Allow-Headers", "Content-Type, Connection, Depth, User-Agent, X-File-Size, X-Requested-With, If-Modified-Since, X-File-Name, Cache-Control");
+xhr.setRequestHeader("Connection", "close");
 
   // Reuse a to store callbacks
   a = [];
