@@ -69,7 +69,7 @@
 			  annyang.addCommands(commands);
 
 			  // Start listening.
-			  annyang.start();
+			  annyang.start({continuous: false});
 			}
 
 			//run processHash to go to the right page
