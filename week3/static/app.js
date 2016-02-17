@@ -62,12 +62,8 @@
 			if (annyang) {
 		  // Let's define a command.
 		  		var commands = {
-			    'show me *tag': logPokemon 
+			    'show me *tag': function(tag){ console.log(tag); }
 				};
-
-			  var logPokemon = function(tag){
-			  	console.log(tag);
-			  };
 
 			  // Add our commands to annyang
 			  annyang.addCommands(commands);
