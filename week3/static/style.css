@@ -23,7 +23,7 @@ section ul {
 body > section {
 	padding: 5em 1em; 
 	color: white;
-	min-height: 100vh;
+	height: 100vh;
 }
 
 h2 {
