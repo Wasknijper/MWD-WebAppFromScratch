@@ -5,6 +5,7 @@ function pegasus(a, xhr) {
 
   // Open url
   xhr.open('GET', a);
+  xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
 
   // Reuse a to store callbacks
   a = [];
@@ -38,7 +39,7 @@ function pegasus(a, xhr) {
       }
     }
   };
-  
+
   // Send
   xhr.send();
 

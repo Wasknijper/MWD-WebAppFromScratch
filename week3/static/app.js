@@ -1,7 +1,7 @@
 (function(){
 	"use strict";
 	var app = {
-		apiUrl : 'https://www.google.com/search?q=%http://pokeapi.co/',
+		apiUrl : 'http://pokeapi.co/',
 		startUrl : "",
 		pages : "",
 		startScreen: "home",
@@ -58,7 +58,7 @@
 				console.log(pokedex.national);
 			}
 
-
+			
 			if (annyang) {
 		  // Let's define a command.
 		  		var commands = {
@@ -83,7 +83,7 @@
 		},
 		request : function(options){
 			//call pegasus libirary for the ajax get
-			return pegasus(this.apiUrl + options + "&btnI=Im+Feeling+Lucky");
+			return pegasus(this.apiUrl + options);
 		},
 		searchForm : function(){
 			var form = document.getElementById('search');
