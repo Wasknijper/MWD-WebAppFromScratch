@@ -35,6 +35,7 @@
 				    	localStorage.pokedex = JSON.stringify(pokedex.national);
 				 	    pokedex.loaded = true;
 				 	    //render the template
+				 	    console.log(pokedex.national);
 				    	curObj.pages.home.innerHTML = templateHome.render({pokedex : pokedex.national});
 
 				    },
@@ -56,7 +57,6 @@
 				//render the template
 				this.pages.home.innerHTML = templateHome.render({pokedex : pokedex.national});
 			}
-
 
 
 			//run processHash to go to the right page
