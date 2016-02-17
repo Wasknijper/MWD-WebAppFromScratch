@@ -1,7 +1,7 @@
 (function(){
 	"use strict";
 	var app = {
-		apiUrl : '//pokeapi.co/',
+		apiUrl : 'http://pokeapi.co/',
 		startUrl : "",
 		pages : "",
 		startScreen: "home",
@@ -248,7 +248,7 @@
 		},
 		getPokemonImg : function(pName){
 			//I had to use a wrapper to get around CORS
-			var mwjs = new MediaWikiJS('//bulbapedia.bulbagarden.net/');
+			var mwjs = new MediaWikiJS('http://bulbapedia.bulbagarden.net/');
 			//make a page name and a div to display the pokemon in
 			var pageName = pName + '_(Pokémon)';
 			var imgDiv = document.createElement('div');
@@ -264,7 +264,7 @@
     			} else {
     				//The main image is always the 3rd in the array.
 	    			var imgName = data.parse.images[2];
-	    			var getImg = new MediaWikiJS('//bulbapedia.bulbagarden.net/');
+	    			var getImg = new MediaWikiJS('http://bulbapedia.bulbagarden.net/');
 
 	    			//now we have to do another request to get the direct link to the img
 	    			getImg.send({action: 'query', titles: "File:" + imgName, prop: 'imageinfo', iiprop: 'url', rawcontinue:""},function(dataImg){
