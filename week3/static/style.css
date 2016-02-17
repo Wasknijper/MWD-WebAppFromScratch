@@ -53,6 +53,10 @@ h2 {
 	height: 100%;
 }
 
+#pokemon > div:after {
+	clear: both;
+}
+
 #home li {
 	display: inline-block; 
 	padding: 1em;
