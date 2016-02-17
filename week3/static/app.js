@@ -36,7 +36,7 @@
 				 	    pokedex.loaded = true;
 				 	    //render the template
 				    	curObj.pages.home.innerHTML = templateHome.render({pokedex : pokedex.national});
-
+				    	console.log(pokedex.national);
 				    },
 				    // error handler
 				    function(data, xhr) {
@@ -55,6 +55,7 @@
 				pokedex.loaded = true;
 				//render the template
 				this.pages.home.innerHTML = templateHome.render({pokedex : pokedex.national});
+				console.log(pokedex.national);
 			}
 
 			//run processHash to go to the right page
@@ -70,24 +71,16 @@
 			var form = document.getElementById('search');
 			//returns an array
 			var field = document.getElementsByName('searchPoke')[0];
+			var fieldValue;
+			console.log(field);
+
 			form.onsubmit = function(event){
 				event.preventDefault();
-				var found = pokedex.findPokemon(pokedex.national, field.value);
-				var p = document.createElement('p');
-				var message, pName, uri, goTo;
-
-				console.log(found);
-				if(found === false){
-					p.appendChild(message);
-					app.pages.home.appendChild(p);
-					p.innerHTML = "Pokemon not found!";
-				} else {
-					pName = pokedex.national[found].name;
-					uri = pokedex.national[found].resource_uri;
-					pokedex.loadPokemon(pName, uri);
-					window.location.hash = ('pokemon/' + pName);
-				}
-				return false;
+				fieldValue = field.value.toLowerCase();
+				var searchResults = pokedex.national.filter(function(object){
+					return object.name.includes(fieldValue);
+				});
+				app.pages.home.innerHTML = templateSearch.render({pokedex : searchResults});
 			};
 
 		}
@@ -100,11 +93,11 @@
 	routes.add('', function () {
   		document.title = 'Home';
   		app.pages.home.classList.remove("invis");
-  		console.log(pokedex.national);
   		if (pokedex.loaded === false){
   			//if pokedex is still being initilized show a loading message
   			app.pages.home.innerHTML = templateLoading.render();
   		} else {
+  			//otherwise just show the pokedex
   			app.pages.home.innerHTML = templateHome.render({pokedex : pokedex.national});
   			app.searchForm();
    		}
@@ -125,12 +118,13 @@
 			//Start the loading template and execute load function to display the pokemon
   			app.pages.pokemon.innerHTML = templateLoadingPoke.render({name : pName});
 			url = pokedex.national[found].resource_uri;
+			//start the load pokemon function to get the data on this pokemon
 			pokedex.loadPokemon(pName.capitalize(), url);
 		}
 
 	});
 
-	// Hash-based routing
+	// Hash-based routing, get the hash and run the routes
 	function processHash() {
   		var hash = location.hash || '#';
   		app.oldRoute = app.newRoute;
@@ -145,7 +139,7 @@
 			window.scrollTo(0,0);
 			newRoute = newRoute.split('/')[0];
 			oldRoute = oldRoute.split('/')[0];
-			//console.log(newRoute);
+
 			//check if the newRoute is the same as the old route, only excecute if its changes
 			if (newRoute != oldRoute) {
 				if (newRoute){
@@ -170,46 +164,38 @@
 	var templateLoading = new t("<p>Loading all the Pokémon...</p>");
 	var templateLoadingPoke = new t("<p>Loading data on {{=name}}</p>");
 	var templateHome = new t("<form id=\'search\'><input type=\'text\' name=\'searchPoke\' placeholder=\'Enter the pokemon you want to find\' /><button type=\'submit\'>Find that Pokémon!</button></form><ul>{{@pokedex}}<li><a href=\'#pokemon/{{%_val.name}}\'>{{=_val.name}}</a></li>{{/@pokedex}}</ul>");
+	var templateSearch = new t("<form id=\'search\'><input type=\'text\' name=\'searchPoke\' placeholder=\'Enter the pokemon you want to find\' /><button type=\'submit\'>Find that Pokémon!</button></form><h1>Search results:</h1><ul>{{@pokedex}}<li><a href=\'#pokemon/{{%_val.name}}\'>{{=_val.name}}</a></li>{{/@pokedex}}</ul>");	
 	var templateError = new t("<p>This is not a pokemon! <a href=\'#\'>Return to Home</a></p>");
 	var templatePokemonEvolve = new t("<h1>Meet {{=pokemon.name}}!</h1> <main> <section> <h2>Abilities</h2> {{@pokemon.abilities}}<li>{{=_val.name}}</a></li>{{/@pokemon.abilities}}</section> <h2>Stats</h2> <section> <li>Attack: {{=pokemon.attack}}</li><li>Defence: {{=pokemon.defence}}</li><li>Hitpoints: {{=pokemon.hp}}</li><li>Sp. Attack: {{=pokemon.sp_atk}}</li><li>Sp. Defence: {{=pokemon.sp_def}}</li><li>Speed: {{=pokemon.speed}}</li></section> <section>{{=pokemon.name}} evolves to <a href=\'#pokemon/{{=evoLink}}\'>{{=evolution}}</a></section></main>");
 	var templatePokemon = new t("<h1>Meet {{=pokemon.name}}!</h1><main> <section> <h2>Abilities</h2> {{@pokemon.abilities}}<li>{{=_val.name}}</a></li>{{/@pokemon.abilities}}</section> <h2>Stats</h2> <section> <li>Attack: {{=pokemon.attack}}</li><li>Defence: {{=pokemon.defence}}</li><li>Hitpoints: {{=pokemon.hp}}</li><li>Sp. Attack: {{=pokemon.sp_atk}}</li><li>Sp. Defence: {{=pokemon.sp_def}}</li><li>Speed: {{=pokemon.speed}}</li></section></main>");
 
 	var pokedex = {
-		//pokemon objects in the national array have a name(bulbasaur) and a resource_uri("api/v1/pokemon/1/")
 		loaded : false,
+		//pokemon objects in the national array have a name(bulbasaur) and a resource_uri("api/v1/pokemon/1/")
 		national : [],
 		savedPokemon : [],
-		loadPokemon : function(pName, uri, callBack) {
-			//make the request to the api
+		loadPokemon : function(pName, uri) {
 			var curObj = this;
-			//check if this pokemon already exists in the array
-			var isSaved = this.findPokemon(this.savedPokemon, pName);
 			//check if the pokemon exists in the savedPokemon array
+			var isSaved = this.findPokemon(this.savedPokemon, pName);
 			if (isSaved === false){
+				//make the request to the pokeApi if it isnt saved
 				var result = app.request(uri);
-				//if it doesnt we store the data in savedPokemon and launch displayPokemon for it to render
 				result.then(
 					function(data, xhr) {
 						var pokemon = data;
-						console.log(data);
 						curObj.savedPokemon.push(data);
 						localStorage.savedPokemon = JSON.stringify(curObj.savedPokemon);
-						//return the loaded pokemon so we can use it in a function
+						//pass the pokemon object to the displayPokemon function
 						curObj.displayPokemon(pokemon);
-
-						if(typeof callBack === "function"){
-							callBack(pName);
-						}
 					}, function(data, xhr) {
+						//otherwise show the error
 						console.error(data, xhr.status);
 					}
 				);
 			} else {
 				// it already exists in savedPokemon run displayPokemon
 				this.displayPokemon(this.savedPokemon[isSaved]);
-				if(typeof callBack === "function"){
-					callBack();
-				}
 			}
 
 		},
@@ -233,33 +219,48 @@
 		},
 		displayPokemon : function(pokemon){
 			//check if the pokemon has an evolution to render the correct template
-			var imgDiv = document.createElement('div');
-				imgDiv.style.backgroundImage = "url('load.gif')";
-				
 			if (pokemon.evolutions.length > 0){
 	  			app.pages.pokemon.innerHTML = templatePokemonEvolve.render({pokemon : pokemon, evolution: pokemon.evolutions[0].to, evoLink : pokemon.evolutions[0].to.toLowerCase()});
-	  			app.pages.pokemon.appendChild(imgDiv);
-	  			this.getPokemonImg(pokemon.name, imgDiv);
+	  			//then we load the image from a different api
+	  			this.getPokemonImg(pokemon.name);
 	  		} else {
 	  			app.pages.pokemon.innerHTML = templatePokemon.render({pokemon : pokemon});
-	  			app.pages.pokemon.appendChild(imgDiv);
-	  			this.getPokemonImg(pokemon.name, imgDiv);	
+				this.getPokemonImg(pokemon.name);
 	  		}
 		},
-		getPokemonImg : function(pName, img){
+		getPokemonImg : function(pName){
+			//I had to use a wrapper to get around CORS
 			var mwjs = new MediaWikiJS('http://bulbapedia.bulbagarden.net/');
+			//make a page name and a div to display the pokemon in
 			var pageName = pName + '_(Pokémon)';
-			//console.log(pageName);
+			var imgDiv = document.createElement('div');
+				imgDiv.style.backgroundImage = "url('load.gif')";
+			//we append it so the user knows an image is being loaded
+			app.pages.pokemon.appendChild(imgDiv);
+
+			//make another request to get the image we want from the page
 			mwjs.send({action: 'parse', page: pageName , prop: 'images'}, function (data) {
-    			var imgName = data.parse.images[2]; 
-    			//console.log(imgName);
+    			if(data.error){
+    				//if it throws an error show an error message. Not all pokémon have a seperate img, like rotom-wash or any mega evolution
+	    			imgDiv.style.backgroundImage = "url('error.png')";
+    			} else {
+    				//The main image is always the 3rd in the array.
+	    			var imgName = data.parse.images[2];
+	    			var getImg = new MediaWikiJS('http://bulbapedia.bulbagarden.net/');
 
-    			var getImg = new MediaWikiJS('http://bulbapedia.bulbagarden.net/');
+	    			//now we have to do another request to get the direct link to the img
+	    			getImg.send({action: 'query', titles: "File:" + imgName, prop: 'imageinfo', iiprop: 'url', rawcontinue:""},function(dataImg){
+	    				//object in objects in objects in arrays in objects...
+	    				var imgUrl = dataImg.query.pages[-1].imageinfo[0].url;
+	    				//make a preloader so we only replace the image when its finished loading
+	    				var preloader = new Image();
+	    				preloader.onload = function(){
+	    					imgDiv.style.backgroundImage = "url(" + imgUrl +")";	
+	    				};
+	    				preloader.src = imgUrl;
 
-    			getImg.send({action: 'query', titles: "File:" + imgName, prop: 'imageinfo', iiprop: 'url', rawcontinue:""},function(dataImg){
-    				var imgUrl = dataImg.query.pages[-1].imageinfo[0].url;
-    				img.style.backgroundImage = "url(" + imgUrl +")";
-    			});
+	    			});
+    			}
 			});
 		}
 	};
