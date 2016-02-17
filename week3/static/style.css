@@ -54,6 +54,7 @@ h2 {
 }
 
 #pokemon > div:after {
+	content:"";
 	clear: both;
 }
 
