@@ -1,7 +1,7 @@
 (function(){
 	"use strict";
 	var app = {
-		apiUrl : 'http://pokeapi.co/',
+		apiUrl : 'https://pokeapi.co/',
 		startUrl : "",
 		pages : "",
 		startScreen: "home",
@@ -56,6 +56,24 @@
 				//render the template
 				this.pages.home.innerHTML = templateHome.render({pokedex : pokedex.national});
 				console.log(pokedex.national);
+			}
+
+
+			if (annyang) {
+		  // Let's define a command.
+		  		var commands = {
+			    'show me *tag': logPokemon 
+				};
+
+			  var logPokemon = function(tag){
+			  	console.log(tag);
+			  };
+
+			  // Add our commands to annyang
+			  annyang.addCommands(commands);
+
+			  // Start listening.
+			  annyang.start();
 			}
 
 			//run processHash to go to the right page
@@ -230,7 +248,7 @@
 		},
 		getPokemonImg : function(pName){
 			//I had to use a wrapper to get around CORS
-			var mwjs = new MediaWikiJS('http://bulbapedia.bulbagarden.net/');
+			var mwjs = new MediaWikiJS('https://bulbapedia.bulbagarden.net/');
 			//make a page name and a div to display the pokemon in
 			var pageName = pName + '_(Pokémon)';
 			var imgDiv = document.createElement('div');
@@ -246,7 +264,7 @@
     			} else {
     				//The main image is always the 3rd in the array.
 	    			var imgName = data.parse.images[2];
-	    			var getImg = new MediaWikiJS('http://bulbapedia.bulbagarden.net/');
+	    			var getImg = new MediaWikiJS('https://bulbapedia.bulbagarden.net/');
 
 	    			//now we have to do another request to get the direct link to the img
 	    			getImg.send({action: 'query', titles: "File:" + imgName, prop: 'imageinfo', iiprop: 'url', rawcontinue:""},function(dataImg){
@@ -272,24 +290,4 @@
 
 	//start the app
 	app.init();
-
-	var commands;
-
-	if (annyang) {
-  // Let's define a command.
-  		commands = {
-	    'show me *tag': logPokemon 
-		};
-
-	  var logPokemon = function(tag){
-	  	console.log(tag);
-	  };
-
-	  // Add our commands to annyang
-	  annyang.addCommands(commands);
-
-	  // Start listening.
-	  annyang.start();
-	}
-
 }());
