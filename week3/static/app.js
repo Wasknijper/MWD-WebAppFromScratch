@@ -62,7 +62,7 @@
 			if (annyang) {
 		  // Let's define a command.
 		  		var commands = {
-			    'show me *tag': function(tag){ alert(tag); }
+			    'test': function(tag){ alert('Test!'); }
 				};
 
 			  // Add our commands to annyang
