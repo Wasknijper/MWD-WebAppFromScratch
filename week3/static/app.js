@@ -31,6 +31,7 @@
 				    	// load the list of pokemon into the pokedex, since it contains all the pokemon its the national pokedex.
 				    	// Api returns an object, not a string
 				    	pokedex.national = data.pokemon;
+				    	console.log(data.pokemon);
 				    	//but for us to save in local storage we do need to stringify
 				    	localStorage.pokedex = JSON.stringify(pokedex.national);
 				 	    pokedex.loaded = true;
