@@ -59,11 +59,19 @@
 			}
 
 
-			var recognition = new webkitSpeechRecognition();
-recognition.onresult = function(event) { 
-  console.log(event) 
-}
-recognition.start();
+			if (annyang) {
+		  // Let's define a command.
+		  		var commands = {
+			    'show me *tag': function(tag){ alert(tag); }
+				};
+
+			  // Add our commands to annyang
+			  annyang.addCommands(commands);
+
+			  // Start listening.
+			  annyang.start();
+			}
+
 			//run processHash to go to the right page
 			processHash();
 			//add the event listener for future hashchanges
