@@ -86,6 +86,8 @@
 		}
 	};
 
+	// Om helemaal OOP te gaan zou ik de functies hieronder ook in een object zetten en die aanroepen in je app.init
+
 	//make a router
 	var routes = new Rlite();
 
@@ -266,6 +268,7 @@
 	};
 
 	//add capitalize function to string, source: http://stackoverflow.com/a/3291856
+	// Deze functie kun je nog in een object (util?) zetten zodat je hem kunt hergebruiken.
 	String.prototype.capitalize = function() {
     	return this.charAt(0).toUpperCase() + this.slice(1);
 	};
