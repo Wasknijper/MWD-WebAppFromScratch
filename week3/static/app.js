@@ -273,4 +273,23 @@
 	//start the app
 	app.init();
 
+	var commands;
+
+	if (annyang) {
+  // Let's define a command.
+  		commands = {
+	    'show me *tag': logPokemon 
+		};
+
+	  var logPokemon = function(tag){
+	  	console.log(tag);
+	  };
+
+	  // Add our commands to annyang
+	  annyang.addCommands(commands);
+
+	  // Start listening.
+	  annyang.start();
+	}
+
 }());
