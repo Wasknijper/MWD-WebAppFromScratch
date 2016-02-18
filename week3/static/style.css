@@ -24,6 +24,7 @@ body > section {
 	padding: 5em 1em; 
 	color: white;
 	height: auto;
+	min-height: 100vh;
 }
 
 h2 {
