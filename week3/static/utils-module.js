@@ -25,7 +25,7 @@ var utils = (function(){
 		},
 		request : function(options){
 			//call pegasus libirary for the ajax get
-			return pegasus(app.apiUrl + options);
+			return pegasus(launcher.apiUrl + options);
 		},
 		find : function(array, value, key){
 			//accepts the array to search in and the value we look for
