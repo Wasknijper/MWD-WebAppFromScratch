@@ -1,3 +1,7 @@
+body {
+	background-color: #83C7E5;
+}
+
 * {
 	padding: 0;
 	margin: 0;
@@ -9,6 +13,17 @@ header{
 	background-color: white;
 	position: fixed;
 	width: 100%;
+	z-index: 100;
+}
+
+h1 span {
+	font-size: 0.7em;
+	font-weight: normal;
+}
+
+h1 em{
+	font-weight: bold;
+	font-style: normal;
 }
 
 nav li {
@@ -26,23 +41,52 @@ section ol:after, section ul:after {
 }
 
 body > section {
-	padding: 5em 1em; 
+	padding: 4em 1em; 
 	color: white;
 	height: auto;
 	min-height: 100vh;
+	-webkit-transition: 1s ease-in-out;
+	        transition: 1s ease-in-out;
+}
+
+section h1 {
+	margin-bottom: 1em;
 }
 
 h2 {
 	font-size: 1.2em;
 }
 
-#home{
-	background-color: #83C7E5;
+main section:first-of-type{
+	max-width: 25em;
 }
 
 #pokemon{
-	background-color: #00AAAD;
+	background-color: #333;
 }
+
+.normal, .fire, .electric,  .ice {
+	color: black;
+}
+
+#pokemon.fire{ background-color: #EE8130;}
+#pokemon.electric { background-color: #F7D02C;}
+#pokemon.ice { background-color: #96D9D6;}
+#pokemon.normal {background-color: #A8A77A;}
+#pokemon.grass { background-color: #7AC74C;}
+#pokemon.water { background-color: #6390F0;}
+#pokemon.fighting{ background-color: #C22E28;}
+#pokemon.poison {background-color: #A33EA1;}
+#pokemon.ground {background-color: #E2BF65;}
+#pokemon.flying{ background-color: #A98FF3;}
+#pokemon.psychic {background-color:  #F95587;}
+#pokemon.bug {background-color: #A6B91A;}
+#pokemon.rock {background-color: #B6A136;}
+#pokemon.ghost {background-color: #735797;}
+#pokemon.dragon {background-color: #6F35FC;}
+#pokemon.dark {background-color: #705746;}
+#pokemon.steel {background-color: #B7B7CE;}
+#pokemon.fairy {background-color: #D685AD;}
 
 #pokemon:after{
   content: "";
@@ -57,9 +101,8 @@ h2 {
 #pokemon > div{
 	float: left;
 	display: inline-block;
-	max-width: 60em;
-	max-height: 60em;
-	min-height: 20em;
+	max-width: 30em;
+	min-height: 30em;
 	background-size: contain;
 	background-repeat: no-repeat;
 	width: 100%;
@@ -77,9 +120,28 @@ h2 {
 @media(max-width: 700px){
 	#home li {
 		min-width: 0;
+		width: auto;
+	}
+
+	#pokemon > div {
+		min-height: 20em;
+		max-width: 20em;
 	}
 }
 
 .invis{
-	display: none;
+	position: absolute;
+	overflow: hidden;
+	opacity: 0;
+	z-index: -1;
+}
+
+#pokemon > .loader {
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 150px 150px;
+}
+
+h2 {
+	margin-top: 1em;
 }

@@ -44,7 +44,7 @@ var router = (function(){
 		//look up the pokemon in pokedex.national
 		var found = utils.find(pokedex.national, pName, 'name');
 		var url, currentPokemon;
-
+		launcher.pages.pokemon.className = '';
 		if (found === false){
 			//if pokemon isnt found in pokedex it doesnt exist
 			launcher.pages.pokemon.innerHTML = templates.Error.render();

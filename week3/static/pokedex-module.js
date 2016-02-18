@@ -1,12 +1,39 @@
 var pokedex = (function(){
-	var displayPokemon = function(pokemon){
+
+	var getDescription = function(pokemon){
+		if(!pokemon.descriptions[0]){
+			displayPokemon(pokemon);
+		} else {
+			var descriptionRequest = utils.request(pokemon.descriptions[0].resource_uri);
+			descriptionRequest.then(
+				function(data){
+					var description = data;
+					console.log(description);
+					displayPokemon(pokemon, description);
+				}
+			);	
+		}
+		
+	}
+
+	var displayPokemon = function(pokemon, d){
+		var type = pokemon.types[0].name;
+		var description;
+		if(!d){
+			description = "No description found for this pokemon";
+		} else {
+			description = d.description;	
+		}
+		console.log(description);
+		// it already exists in savedPokemon run displayPokemon
+		launcher.pages.pokemon.classList.add(type);
 		//check if the pokemon has an evolution to render the correct template
 		if (pokemon.evolutions.length > 0){
-  			launcher.pages.pokemon.innerHTML = templates.PokemonEvolve.render({pokemon : pokemon, evolution: pokemon.evolutions[0].to, evoLink : pokemon.evolutions[0].to.toLowerCase()});
+  			launcher.pages.pokemon.innerHTML = templates.PokemonEvolve.render({pokemon : pokemon, descript : description, evolution: pokemon.evolutions[0].to, evoLink : pokemon.evolutions[0].to.toLowerCase()});
   			//then we load the image from a different api
   			getPokemonImg(pokemon.name);
   		} else {
-  			launcher.pages.pokemon.innerHTML = templates.Pokemon.render({pokemon : pokemon});
+  			launcher.pages.pokemon.innerHTML = templates.Pokemon.render({pokemon : pokemon, descript : description});
 			getPokemonImg(pokemon.name);
   		}
 	};
@@ -17,7 +44,9 @@ var pokedex = (function(){
 		//make a page name and a div to display the pokemon in
 		var pageName = pName + '_(Pokémon)';
 		var imgDiv = document.createElement('div');
+			////loading icon is from http://loading.io/
 			imgDiv.style.backgroundImage = "url('load.gif')";
+			imgDiv.classList.add('loader');
 		//we append it so the user knows an image is being loaded
 		launcher.pages.pokemon.appendChild(imgDiv);
 
@@ -26,6 +55,7 @@ var pokedex = (function(){
 			if(data.error){
 				//if it throws an error show an error message. Not all pokémon have a seperate img, like rotom-wash or any mega evolution
     			imgDiv.style.backgroundImage = "url('error.png')";
+    			imgDiv.classList.remove('loader');
 			} else {
 				//The main image is always the 3rd in the array.
     			var imgName = data.parse.images[2];
@@ -38,6 +68,7 @@ var pokedex = (function(){
     				//make a preloader so we only replace the image when its finished loading
     				var preloader = new Image();
     				preloader.onload = function(){
+    					imgDiv.classList.remove('loader');
     					imgDiv.style.backgroundImage = "url(" + imgUrl +")";	
     				};
     				preloader.src = imgUrl;
@@ -109,16 +140,16 @@ var pokedex = (function(){
 						var pokemon = data;
 						curObj.savedPokemon.push(data);
 						localStorage.savedPokemon = JSON.stringify(curObj.savedPokemon);
-						//pass the pokemon object to the displayPokemon function
-						displayPokemon(pokemon);
+						//pass the pokemon object to the getDescription function
+						getDescription(pokemon);
 					}, function(data, xhr) {
 						//otherwise show the error
 						console.error(data, xhr.status);
 					}
 				);
 			} else {
-				// it already exists in savedPokemon run displayPokemon
-				displayPokemon(this.savedPokemon[isSaved]);
+				var pokemon = this.savedPokemon[isSaved]
+				getDescription(pokemon);
 			}
 
 		} 
