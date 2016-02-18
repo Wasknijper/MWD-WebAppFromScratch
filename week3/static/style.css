@@ -34,6 +34,10 @@ section ol, section ul {
 	padding: 1em;
 }
 
+main section ul {
+	padding-top: 0;
+}
+
 section ol {
 	margin: 0 auto;
     width: 90%;
