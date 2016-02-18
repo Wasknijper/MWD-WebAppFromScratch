@@ -150,7 +150,7 @@
 				 	    curObj.loaded = true;
 				 	    //render the template
 				    	app.pages.home.main.innerHTML = templates.Home.render({pokedex : pokedex.national});
-				    	console.log(curObj.national);
+				    	//console.log(curObj.national);
 				    },
 				    // error handler
 				    function(data, xhr) {
@@ -170,7 +170,7 @@
 				//render the template
 				pokedex.national = utils.sort(pokedex.national, 'resource_uri');
 				app.pages.home.main.innerHTML = templates.Home.render({pokedex : pokedex.national});
-				console.log(pokedex.national);
+				//console.log(pokedex.national);
 			}
 		},
 		loadPokemon : function(pName, uri) {
@@ -201,11 +201,11 @@
 		displayPokemon : function(pokemon){
 			//check if the pokemon has an evolution to render the correct template
 			if (pokemon.evolutions.length > 0){
-	  			app.pages.pokemon.innerHTML = template.PokemonEvolve.render({pokemon : pokemon, evolution: pokemon.evolutions[0].to, evoLink : pokemon.evolutions[0].to.toLowerCase()});
+	  			app.pages.pokemon.innerHTML = templates.PokemonEvolve.render({pokemon : pokemon, evolution: pokemon.evolutions[0].to, evoLink : pokemon.evolutions[0].to.toLowerCase()});
 	  			//then we load the image from a different api
 	  			this.getPokemonImg(pokemon.name);
 	  		} else {
-	  			app.pages.pokemon.innerHTML = template.Pokemon.render({pokemon : pokemon});
+	  			app.pages.pokemon.innerHTML = templates.Pokemon.render({pokemon : pokemon});
 				this.getPokemonImg(pokemon.name);
 	  		}
 		},
@@ -248,13 +248,14 @@
 
 	var utils = {
 		sort : function(array, key ){
-			return _.sortBy(array, function(obj){
-							var number = obj[key].match(/\d/g);
-							number = number.join("");
-							var zerofilled = ('00000'+ number).slice(-5);
-							console.log(zerofilled);
-				    		return zerofilled;
-				    	});
+			var result;
+			result =  _.sortBy(array, function(obj){
+				var number = obj[key].match(/\d/g);
+				number = number.join("");
+				var zerofilled = ('00000'+ number).slice(-5);
+				return zerofilled;
+	    	});
+			return result;
 		},
 		//add capitalize function to string, source: http://stackoverflow.com/a/3291856
 		capitalize : function(string) {
