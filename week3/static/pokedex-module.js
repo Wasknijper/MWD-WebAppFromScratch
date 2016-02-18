@@ -8,7 +8,7 @@ var pokedex = (function(){
 			descriptionRequest.then(
 				function(data){
 					var description = data;
-					console.log(description);
+					console.log(pokemon);
 					displayPokemon(pokemon, description);
 				}
 			);	

@@ -34,6 +34,11 @@ section ol, section ul {
 	padding: 1em;
 }
 
+section ol {
+	margin: 0 auto;
+    width: 90%;
+}
+
 section ol:after, section ul:after {
 	display: block;
 	content:"";
@@ -41,9 +46,11 @@ section ol:after, section ul:after {
 }
 
 body > section {
-	padding: 4em 1em; 
+	position: absolute;
+	padding: 6em 1em; 
 	color: white;
 	height: auto;
+	width: 100%;
 	min-height: 100vh;
 	-webkit-transition: 1s ease-in-out;
 	        transition: 1s ease-in-out;
@@ -65,7 +72,7 @@ main section:first-of-type{
 	background-color: #333;
 }
 
-.normal, .fire, .electric,  .ice {
+.normal, .fire, .electric,  .ice, .ground {
 	color: black;
 }
 
@@ -111,7 +118,6 @@ main section:first-of-type{
 }
 
 #home li { 
-	min-width: 8em;
     margin: 2em;
     padding: 0em;
     float: left;
@@ -130,7 +136,7 @@ main section:first-of-type{
 }
 
 .invis{
-	position: absolute;
+	position: fixed;
 	overflow: hidden;
 	opacity: 0;
 	z-index: -1;
@@ -144,4 +150,20 @@ main section:first-of-type{
 
 h2 {
 	margin-top: 1em;
+}
+
+header h1 {
+	padding: 0.5em;
+}
+
+form {
+	text-align: center;
+}
+
+form > * {
+	font-size: 1.5em;
+}
+
+form input {
+	width: 50%;
 }
