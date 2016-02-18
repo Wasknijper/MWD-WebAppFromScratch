@@ -201,11 +201,11 @@
 		displayPokemon : function(pokemon){
 			//check if the pokemon has an evolution to render the correct template
 			if (pokemon.evolutions.length > 0){
-	  			app.pages.pokemon.innerHTML = templatePokemonEvolve.render({pokemon : pokemon, evolution: pokemon.evolutions[0].to, evoLink : pokemon.evolutions[0].to.toLowerCase()});
+	  			app.pages.pokemon.innerHTML = template.PokemonEvolve.render({pokemon : pokemon, evolution: pokemon.evolutions[0].to, evoLink : pokemon.evolutions[0].to.toLowerCase()});
 	  			//then we load the image from a different api
 	  			this.getPokemonImg(pokemon.name);
 	  		} else {
-	  			app.pages.pokemon.innerHTML = templatePokemon.render({pokemon : pokemon});
+	  			app.pages.pokemon.innerHTML = template.Pokemon.render({pokemon : pokemon});
 				this.getPokemonImg(pokemon.name);
 	  		}
 		},
