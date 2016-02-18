@@ -1,4 +1,4 @@
-var launcher = (function () {
+var app = (function () {
   
   var obj = {
     apiUrl : 'http://pokeapi.co/',
@@ -22,9 +22,29 @@ var launcher = (function () {
       utils.processHash();
       //add the event listener for future hashchanges
       window.addEventListener('hashchange', utils.processHash);
+    },
+    searchForm : function(){
+      var form = document.getElementById('search');
+      //returns an array
+      var field = document.getElementsByName('searchPoke')[0];
+      var fieldValue;
+      console.log(field);
+
+      form.onsubmit = function(e){
+        //e.preventDefault();
+        var searchResults = "";
+        
+        fieldValue = field.value.toLowerCase();
+        searchResults = pokedex.national.filter(function(object){
+          return object.name.includes(fieldValue);
+        });
+        app.pages.home.main.innerHTML = templates.Search.render({pokedex : searchResults});
+        return false;
+      };
+
     }
   };
   return obj;
 })();
 
-(function(){launcher.init();}());
+app.init();
