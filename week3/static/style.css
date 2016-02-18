@@ -137,6 +137,14 @@ main section:first-of-type{
 		min-height: 20em;
 		max-width: 20em;
 	}
+
+	form > * {
+		font-size: 1em;
+	}
+
+	form input {
+		width: 100%;
+	}
 }
 
 .invis{
