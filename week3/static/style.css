@@ -138,6 +138,10 @@ main section:first-of-type{
 }
 
 @media(max-width: 700px){
+	.loader {
+		width: 100%;
+	}
+
 	#home li {
 		min-width: 0;
 		width: auto;
