@@ -22,7 +22,7 @@ var launcher = (function () {
       utils.processHash();
       //add the event listener for future hashchanges
       gestures.shake.start();
-      window.addEventListener('shake', gestures.shakeEventDidOccur, false);
+      window.addEventListener('shake', pokedex.randomPokemon, false);
       window.addEventListener('hashchange', utils.processHash);
     }
   };
