@@ -8,7 +8,7 @@ var gestures = (function(){
 	return {
 		shake : myShakeEvent,
 		shakeEventDidOccur : function(){
-			pokedex.randomPokemon
+			pokedex.randomPokemon();
 		}
 	}
 }());
