@@ -155,8 +155,8 @@ var pokedex = (function(){
 		},
 		randomPokemon: function(){
 			var randomPoke = _.random(0, this.national.length);
-			alert(randomPoke);
-			//window.location = '#' + pName;
+			pName = this.national[randomPoke].name;
+			window.location = '#' + pName;
 		}
 	};
 }());
