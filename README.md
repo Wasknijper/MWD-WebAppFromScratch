@@ -2,6 +2,7 @@
 
 ##Code opdrachten:
 - Opdracht 5 http://wasknijper.github.io/MWD-WebAppFromScratch/opdracht%205
+- Week 3 http://wasknijper.github.io/MWD-WebAppFromScratch/week3
 
 ## Opdracht 2 - Voor- en nadelen JavaScript libraries/frameworks onderzoeken 
 
