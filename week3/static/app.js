@@ -24,7 +24,7 @@ var launcher = (function () {
       if (annyang) {
   // Let's define a command.
   var commands = {
-    'hello': function() { alert('Hello world!'); }
+    'hello *tag': function(tag) { alert('Hello' + tag + '!'); }
   };
 
   // Add our commands to annyang
