@@ -21,6 +21,8 @@ var launcher = (function () {
       //run processHash to go to the right page
       utils.processHash();
       //add the event listener for future hashchanges
+      gestures.shake.start();
+      window.addEventListener('shake', gestures.shakeEventDidOccur, false);
       window.addEventListener('hashchange', utils.processHash);
     }
   };
