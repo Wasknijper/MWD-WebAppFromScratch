@@ -73,6 +73,7 @@ main section:first-of-type{
 }
 
 #pokemon{
+	width: 100%;
 	background-color: #333;
 }
 
