@@ -77,7 +77,8 @@ main section:first-of-type{
 }
 
 #pokemon{
-	width: 100%;
+	min-width: 100%;
+	overflow-x: hidden;
 	background-color: #333;
 }
 
