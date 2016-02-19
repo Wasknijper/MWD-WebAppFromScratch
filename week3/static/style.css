@@ -127,6 +127,10 @@ main section:first-of-type{
     float: left;
 }
 
+#home h1, #home h2 {
+	text-align: center;
+}
+
 @media(max-width: 700px){
 	#home li {
 		min-width: 0;
@@ -154,10 +158,19 @@ main section:first-of-type{
 	z-index: -1;
 }
 
+
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
 #pokemon > .loader {
 	background-repeat: no-repeat;
 	background-position: center center;
 	background-size: 150px 150px;
+	animation: spin 1s infinite;
+}
+
+@keyframes pop-in {
+
 }
 
 h2 {

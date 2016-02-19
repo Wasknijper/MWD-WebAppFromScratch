@@ -44,8 +44,8 @@ var pokedex = (function(){
 		//make a page name and a div to display the pokemon in
 		var pageName = pName + '_(Pokémon)';
 		var imgDiv = document.createElement('div');
-			////loading icon is from http://loading.io/
-			imgDiv.style.backgroundImage = "url('load.gif')";
+			////pokeball icon is from http://nintendo-papercraft.com/category/video-game/pokemon/
+			imgDiv.style.backgroundImage = "url('load.png')";
 			imgDiv.classList.add('loader');
 		//we append it so the user knows an image is being loaded
 		launcher.pages.pokemon.appendChild(imgDiv);
@@ -69,6 +69,7 @@ var pokedex = (function(){
     				var preloader = new Image();
     				preloader.onload = function(){
     					imgDiv.classList.remove('loader');
+    					imgDiv.classList.add('pop-in');
     					imgDiv.style.backgroundImage = "url(" + imgUrl +")";	
     				};
     				preloader.src = imgUrl;
