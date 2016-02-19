@@ -45,7 +45,7 @@ var pokedex = (function(){
 		var pageName = pName + '_(Pokémon)';
 		var imgDiv = document.createElement('div');
 			////pokeball icon is from http://nintendo-papercraft.com/category/video-game/pokemon/
-			imgDiv.style.backgroundImage = "url('load.png')";
+			imgDiv.style.backgroundImage = "url('img/load.png')";
 			imgDiv.classList.add('loader');
 		//we append it so the user knows an image is being loaded
 		launcher.pages.pokemon.appendChild(imgDiv);
@@ -54,7 +54,7 @@ var pokedex = (function(){
 		mwjs.send({action: 'parse', page: pageName , prop: 'images'}, function (data) {
 			if(data.error){
 				//if it throws an error show an error message. Not all pokémon have a seperate img, like rotom-wash or any mega evolution
-    			imgDiv.style.backgroundImage = "url('error.png')";
+    			imgDiv.style.backgroundImage = "url('img/error.png')";
     			imgDiv.classList.remove('loader');
 			} else {
 				//The main image is always the 3rd in the array.
