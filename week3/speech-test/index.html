@@ -1,0 +1,37 @@
+<!doctype html>
+
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width">
+	    <link rel="stylesheet" href="static/style.css">
+	    <title>Web App from Scratch</title>
+	</head>
+	<body>	
+		<header>
+			<a href="#"><h1> Pokédex </h1></a>
+		</header>
+		<section id="home">
+			<form id='search'><input type='text' name='searchPoke' placeholder='Enter the pokemon you want to find' /><button type='submit'>Find that Pokémon!</button></form>
+			<h2>On mobile and can't choose? Shake for a random Pokémon!</h2>
+			<main id="homecontent"></main>
+		</section>
+
+		<section id="pokemon"></section>
+	</body>
+
+	<script src="static/libs/underscore.js"></script>
+	<script src="static/libs/pegasus.js"></script>
+	<script src="static/libs/rlite.js"></script>
+	<script src="static/libs/t.js"></script>
+	<script src="static/libs/mediawikiJS.js"></script>
+	<script src="static/libs/shake.js"></script>
+	<script src="static/libs/annyang.js"></script>
+
+	<script src="static/templates-module.js"></script>
+	<script src="static/sections-module.js"></script>
+	<script src="static/router-module.js"></script>
+	<script src="static/utils-module.js"></script>
+	<script src="static/pokedex-module.js"></script>
+	<script src="static/gestures.js"></script>
+	<script src="static/app.js"></script>
+</html>

@@ -21,6 +21,19 @@ var launcher = (function () {
       //run processHash to go to the right page
       utils.processHash();
 
+      if (annyang) {
+  // Let's define a command.
+  var commands = {
+    'show me *tag': function(tag) { alert('Hello ' + tag + '!'); }
+  };
+
+  // Add our commands to annyang
+  annyang.addCommands(commands);
+
+      // Start listening.
+      annyang.start({continuous: false});
+    }
+
       //add the event listener for future hashchanges
       gestures.shake.start();
       window.addEventListener('shake', gestures.shakeEventDidOccur, false);
