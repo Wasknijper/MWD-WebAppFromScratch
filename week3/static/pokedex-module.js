@@ -152,6 +152,11 @@ var pokedex = (function(){
 				getDescription(pokemon);
 			}
 
-		} 
+		},
+		randomPokemon: function(){
+			var randomPoke = _.random(0, this.national.length);
+			alert(randomPoke);
+			//window.location = '#' + pName;
+		}
 	};
 }());

@@ -6,9 +6,7 @@ var gestures = (function(){
 
 
 	return {
-		shake : myShakeEvent,
-		shakeEventDidOccur : function(){
-			alert('shake!');
+		shake : myShakeEvent
 		}
 	}
 }());
