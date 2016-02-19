@@ -6,6 +6,9 @@ var gestures = (function(){
 
 
 	return {
-		shake : myShakeEvent
-	};
+		shake : myShakeEvent,
+		shakeEventDidOccur : function(){
+			pokedex.randomPokemon
+		}
+	}
 }());
