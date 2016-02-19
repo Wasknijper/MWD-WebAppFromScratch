@@ -7,6 +7,5 @@ var gestures = (function(){
 
 	return {
 		shake : myShakeEvent
-		}
-	}
+	};
 }());
