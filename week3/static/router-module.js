@@ -1,8 +1,5 @@
 var router = (function(){
 
-	//make a router
-	var routes = new Rlite();
-
 	var searchForm = function(){
       var form = document.getElementById('search');
       //returns an array
@@ -21,8 +18,10 @@ var router = (function(){
         launcher.pages.home.main.innerHTML = templates.Search.render({pokedex : searchResults});
         return false;
       };
+  	};
+	//make a router
+	var routes = new Rlite();
 
-    };
 	//route for no hash or empty hash
 	routes.add('', function () {
   		document.title = 'Home';
